@@ -55,13 +55,21 @@ class Database {
     return this.isPg ? 'ILIKE' : 'LIKE';
   }
 
+  // Convert SQLite-style `?` placeholders to Postgres `$1, $2, ...`.
+  // Our repository SQL only uses `?` as parameter placeholders (never inside
+  // literals), so a simple ordered replacement is safe.
+  static toPg(sql) {
+    let i = 0;
+    return sql.replace(/\?/g, () => `$${++i}`);
+  }
+
   /**
    * Run a write query (INSERT/UPDATE/DELETE).
    * Returns { changes, lastInsertRowid }.
    */
   async run(sql, params = []) {
     if (this.isPg) {
-      const r = await this.pool.query(sql, params);
+      const r = await this.pool.query(Database.toPg(sql), params);
       return { changes: r.rowCount || 0, lastInsertRowid: null };
     }
     const stmt = this.sqlite.prepare(sql);
@@ -75,7 +83,7 @@ class Database {
    */
   async insertRowId(sql, params = []) {
     if (this.isPg) {
-      const r = await this.pool.query(`${sql} RETURNING id`, params);
+      const r = await this.pool.query(`${Database.toPg(sql)} RETURNING id`, params);
       return Number(r.rows[0]?.id ?? 0);
     }
     const info = this.sqlite.prepare(sql).run(...params);
@@ -85,7 +93,7 @@ class Database {
   /** Return the first matching row or null. */
   async get(sql, params = []) {
     if (this.isPg) {
-      const r = await this.pool.query(sql, params);
+      const r = await this.pool.query(Database.toPg(sql), params);
       return r.rows[0] || null;
     }
     return this.sqlite.prepare(sql).get(...params) || null;
@@ -94,7 +102,7 @@ class Database {
   /** Return all matching rows. */
   async all(sql, params = []) {
     if (this.isPg) {
-      const r = await this.pool.query(sql, params);
+      const r = await this.pool.query(Database.toPg(sql), params);
       return r.rows;
     }
     return this.sqlite.prepare(sql).all(...params);
@@ -121,9 +129,9 @@ class Database {
       try {
         await client.query('BEGIN');
         const result = await fn({
-          all: (sql, p) => client.query(sql, p).then((r) => r.rows),
-          get: (sql, p) => client.query(sql, p).then((r) => r.rows[0] || null),
-          run: (sql, p) => client.query(sql, p).then((r) => ({ changes: r.rowCount || 0, lastInsertRowid: null })),
+          all: (sql, p) => client.query(Database.toPg(sql), p).then((r) => r.rows),
+          get: (sql, p) => client.query(Database.toPg(sql), p).then((r) => r.rows[0] || null),
+          run: (sql, p) => client.query(Database.toPg(sql), p).then((r) => ({ changes: r.rowCount || 0, lastInsertRowid: null })),
           isPg: true,
         });
         await client.query('COMMIT');
