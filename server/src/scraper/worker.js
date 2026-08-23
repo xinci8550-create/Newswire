@@ -4,6 +4,7 @@ import { fingerprint } from '../utils/text.js';
 import { listSources, recordFetch } from '../models/sources.js';
 import { upsertArticle } from '../models/articles.js';
 import getDb from '../db/database.js';
+import { cleanupArticles } from '../db/cleanup.js';
 
 async function setMeta(key, value) {
   const db = getDb();
@@ -95,6 +96,8 @@ export async function runScrapeCycle({ limit = 60 } = {}) {
   }
 
   summary.finishedAt = Date.now();
+  // Enforce retention: keep the DB bounded (newest N per source, not older than N days).
+  summary.cleanup = await cleanupArticles();
   // Persist last-scrape metadata for the health endpoint.
   await setMeta('last_scrape_at', now);
   await setMeta('last_scrape_stats', summary);

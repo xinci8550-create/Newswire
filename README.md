@@ -6,6 +6,9 @@ editorial reading experience — with user accounts, bookmarking, and browsing h
 
 Built to be **simple, reliable, and free-to-deploy** (Render / Railway / Docker).
 
+> 🌐 **Live:** [https://newswire-2dq6.onrender.com](https://newswire-2dq6.onrender.com)
+> — deployed on Render (free web) + Neon Postgres + cron-job.org (every 30 min).
+
 ---
 
 ## ✨ Features
@@ -196,7 +199,10 @@ npm run fetch
 | `CRON_SECRET` | *(dev)* | Shared secret for `/api/cron/trigger` |
 | `ENABLE_IN_PROCESS_CRON` | `true` | Enable the in-container scheduler |
 | `CORS_ORIGINS` | `http://localhost:5173` | Allowed origins (comma-separated) |
-| `MAX_ARTICLES_PER_SOURCE` | `500` | (Reserved) per-source retention hint |
+| `MAX_ARTICLES_PER_SOURCE` | `1000` | Articles kept per source after cleanup |
+| `ARTICLE_RETENTION_DAYS` | `30` | Drop articles older than N days (favorites kept) |
+| `HISTORY_LIMIT` | `200` | Browsing-history rows kept per user |
+| `CLEANUP_ENABLED` | `true` | Auto-cleanup after each scrape |
 
 ---
 

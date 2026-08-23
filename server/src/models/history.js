@@ -1,4 +1,5 @@
 import getDb from '../db/database.js';
+import config from '../config.js';
 import { toArticle } from './articles.js';
 
 /**
@@ -13,6 +14,18 @@ export async function recordView(userId, articleId) {
   if (!article) return false;
   await db.run('DELETE FROM history WHERE user_id = ? AND article_id = ?', [userId, articleId]);
   await db.run('INSERT INTO history (user_id, article_id, viewed_at) VALUES (?, ?, ?)', [userId, articleId, now]);
+  // Cap each user's history to the newest HISTORY_LIMIT rows.
+  const limit = config.scrape.historyLimit;
+  if (limit && limit > 0) {
+    await db.run(
+      `DELETE FROM history
+        WHERE user_id = ?
+          AND id NOT IN (
+            SELECT id FROM history WHERE user_id = ? ORDER BY viewed_at DESC LIMIT ?
+          )`,
+      [userId, userId, limit]
+    );
+  }
   return true;
 }
 

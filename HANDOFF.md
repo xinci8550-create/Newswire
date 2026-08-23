@@ -58,4 +58,10 @@ npm start                             # → http://localhost:4000
 4. Validate: `node server/test/integration.test.js` and `node client/scripts/smoke.mjs` (requires server up).
 
 ## Current running state (last known)
-- Server up at `http://localhost:4000`, DB ~203 articles, 10 sources (7 reachable), 7 categories.
+- **🌐 Live (public):** https://newswire-2dq6.onrender.com
+  - Render **free web** service (`newswire`, Live) + **Neon Postgres** (`DATABASE_URL`).
+  - In-process cron **off** (`ENABLE_IN_PROCESS_CRON=false`); external scheduler on
+    **cron-job.org** (`newswire-scrape`) hits `/api/cron/trigger` **every 30 min**.
+  - 10 sources all reachable (BBC/Guardian/NYT work in production); ~265 articles.
+- **Local dev:** `http://localhost:4000`, DB `server/data/news.sqlite`.
+- See `DEPLOYMENT.md` for full deploy/maintenance/rollback/backup runbook.

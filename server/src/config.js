@@ -40,7 +40,11 @@ const config = {
     intervalMinutes: intEnv('SCRAPE_INTERVAL_MINUTES', 30),
     cronSecret: process.env.CRON_SECRET || 'dev-cron-secret',
     enableInProcessCron: boolEnv('ENABLE_IN_PROCESS_CRON', true),
-    maxArticlesPerSource: intEnv('MAX_ARTICLES_PER_SOURCE', 500),
+    // Retention / cleanup bounds (keeps the DB from growing unbounded).
+    maxArticlesPerSource: intEnv('MAX_ARTICLES_PER_SOURCE', 1000),
+    retentionDays: intEnv('ARTICLE_RETENTION_DAYS', 30),
+    historyLimit: intEnv('HISTORY_LIMIT', 200),
+    cleanupEnabled: boolEnv('CLEANUP_ENABLED', true),
   },
 
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:5173')
