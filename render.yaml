@@ -12,6 +12,7 @@ services:
     buildCommand: |
       npm install --prefix server && \
       npm install --prefix client && \
+      npm install --prefix client --no-save esbuild && \
       cd client && npm run build
     startCommand: npm run start
     healthCheckPath: /api/health
