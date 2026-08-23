@@ -12,7 +12,7 @@ services:
     buildCommand: |
       npm ci --prefix server && \
       npm ci --prefix client && \
-      npm run build --prefix client
+      cd client && npm run build
     startCommand: npm run start
     healthCheckPath: /api/health
     autoDeploy: true
