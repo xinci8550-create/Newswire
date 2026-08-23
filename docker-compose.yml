@@ -1,0 +1,40 @@
+# Local / self-hosted run with optional PostgreSQL.
+#   docker compose up --build
+# For local dev you can leave DATABASE_URL empty (uses embedded SQLite). For a
+# production-style setup, uncomment the postgres service and set DATABASE_URL.
+services:
+  app:
+    build: .
+    container_name: newswire
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-me-access}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh}
+      CRON_SECRET: ${CRON_SECRET:-change-me-cron}
+      SCRAPE_INTERVAL_MINUTES: "30"
+      ENABLE_IN_PROCESS_CRON: "true"
+      # Use SQLite by default. For Postgres, set DATABASE_URL to point at the service below.
+      # DATABASE_URL: postgres://newswire:newswire@db:5432/newswire
+      SQLITE_PATH: /app/server/data/news.sqlite
+    volumes:
+      - newswire_data:/app/server/data
+    restart: unless-stopped
+
+  # Optional production-style database. Uncomment together with DATABASE_URL above.
+  # db:
+  #   image: postgres:16-alpine
+  #   container_name: newswire-db
+  #   environment:
+  #     POSTGRES_USER: newswire
+  #     POSTGRES_PASSWORD: newswire
+  #     POSTGRES_DB: newswire
+  #   volumes:
+  #     - newswire_pg:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+volumes:
+  newswire_data:
+  # newswire_pg:

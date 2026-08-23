@@ -1,0 +1,20 @@
+{
+  "name": "news-aggregator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-source English news aggregation platform (self-hostable).",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build:client": "npm --prefix client run build",
+    "start": "npm --prefix server run start",
+    "migrate": "npm --prefix server run migrate",
+    "seed": "npm --prefix server run seed",
+    "fetch": "npm --prefix server run fetch",
+    "test": "npm --prefix server test"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

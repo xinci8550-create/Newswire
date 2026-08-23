@@ -1,0 +1,78 @@
+import Parser from 'rss-parser';
+import { toEpochMs } from '../utils/text.js';
+
+/**
+ * rss-parser with extra namespaced fields so we can pull image URLs that feeds
+ * put in media:content / media:thumbnail / content:encoded.
+ */
+const parser = new Parser({
+  timeout: 20000,
+  headers: {
+    'User-Agent': 'NewsAggregator/1.0 (+https://example.com; RSS reader)',
+    Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+  },
+  customFields: {
+    item: [
+      ['media:content', 'mediaContent', { keepArray: false }],
+      ['media:thumbnail', 'mediaThumbnail', { keepArray: false }],
+      ['content:encoded', 'contentEncoded', { keepArray: false }],
+    ],
+  },
+});
+
+const MAX_SUMMARY_LEN = 400;
+
+function stripHtml(html) {
+  if (!html) return '';
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function pickImage(item) {
+  // 1) Structured media fields (enclosure, media:content, media:thumbnail).
+  const candidates = [item.mediaContent, item.mediaThumbnail, item.enclosure];
+  for (const c of candidates) {
+    if (c && typeof c === 'object' && c.url) return c.url;
+    if (typeof c === 'string' && /^https?:\/\//.test(c)) return c;
+  }
+  // 2) First <img> embedded in the raw content/description HTML.
+  const raw = [item.contentEncoded, item.content, item['content:encoded'], item.description, item.summary]
+    .filter(Boolean)
+    .join(' ');
+  const m = raw.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if (m && /^https?:\/\//.test(m[1]) && !/logo|icon|avatar|pixel|tracking|spacer/i.test(m[1])) {
+    return m[1];
+  }
+  return null;
+}
+
+/**
+ * Fetch and parse a feed. Resolves to a list of normalized article-ish objects.
+ * Throws on network errors so the caller can log + continue with other feeds.
+ */
+export async function fetchFeed(feedUrl) {
+  const feed = await parser.parseURL(feedUrl);
+  const items = (feed.items || []).map((item) => {
+    const title = stripHtml(item.title || '').trim();
+    const url = item.link ? item.link.trim() : '';
+    // Prefer RSS description; fall back to content/encoded, then content.
+    const rawSummary = item.contentSnippet || item.content || item.summary || item.contentEncoded || '';
+    const summary = stripHtml(rawSummary).slice(0, MAX_SUMMARY_LEN);
+    const publishedAt = toEpochMs(item.isoDate || item.pubDate || item.pubdate);
+    const imageUrl = pickImage(item);
+    return { title, url, summary, publishedAt, imageUrl };
+  });
+  return { feedTitle: feed.title || feedUrl, items };
+}
+
+export { stripHtml };

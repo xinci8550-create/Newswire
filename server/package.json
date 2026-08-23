@@ -1,0 +1,27 @@
+{
+  "name": "news-aggregator-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend: Express API + RSS scraper + scheduler for the news aggregator.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "migrate": "node src/db/migrate.js",
+    "seed": "node src/db/seed.js",
+    "fetch": "node src/scraper/run-once.js",
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "rss-parser": "^3.13.0"
+  }
+}

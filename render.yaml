@@ -1,0 +1,40 @@
+# Render Blueprint — deploy Newswire to Render.com (free tier).
+# Docs: https://render.com/docs/blueprint-spec
+#
+# IMPORTANT: For durable data, use an EXTERNAL persistent Postgres (recommended:
+# Neon or Supabase free tier) and set its connection string as DATABASE_URL.
+# Render's own free Postgres expires after 30 days — use it only for quick trials.
+services:
+  - type: web
+    name: newswire
+    env: node
+    plan: free
+    buildCommand: |
+      npm ci --prefix server && \
+      npm ci --prefix client && \
+      npm run build --prefix client
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
+      # Set to false + use an external cron (cron-job.org) on sleeping free tier.
+      - key: ENABLE_IN_PROCESS_CRON
+        value: "true"
+      - key: SCRAPE_INTERVAL_MINUTES
+        value: "30"
+      # Leave blank/SQLite for a throwaway trial; set to your Neon/Supabase PG URL for durable data.
+      - key: DATABASE_URL
+        sync: false
+        # value: postgres://user:pass@host:5432/dbname?sslmode=require
+      - key: CORS_ORIGINS
+        value: "*"
