@@ -169,8 +169,10 @@ img { max-width: 100%; display: block; }
   font-size: 14px;
   outline: none;
   background: var(--bg-alt);
+  color: var(--text);
   transition: border-color .15s ease, background .15s ease;
 }
+.search input::placeholder { color: var(--text-faint); }
 .search input:focus { border-color: var(--navy); background: var(--surface); }
 .search button {
   border: 1px solid var(--border-strong);
@@ -437,7 +439,9 @@ img { max-width: 100%; display: block; }
 .field input {
   width: 100%; padding: 11px 14px; font-size: 15px;
   border: 1px solid var(--border-strong); border-radius: 8px; outline: none;
+  color: var(--text); background: var(--bg);
 }
+.field input::placeholder { color: var(--text-faint); }
 .field input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(20,36,61,0.08); }
 .alert {
   padding: 11px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 16px;
@@ -505,7 +509,10 @@ img { max-width: 100%; display: block; }
   border-radius: 8px;
   width: 150px;
   outline: none;
+  color: var(--text);
+  background: var(--bg);
 }
+.name-edit input::placeholder { color: var(--text-faint); }
 .name-edit input:focus { border-color: var(--navy); }
 .link-btn { background: none; border: none; color: var(--text-muted); font-size: 14px; font-weight: 500; padding: 6px; }
 .link-btn:hover { color: var(--accent); }
@@ -548,6 +555,8 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border-strong);
   border-radius: 8px;
   outline: none;
+  color: var(--text);
+  background: var(--bg);
 }
 .pager-input:focus { border-color: var(--accent); }
 
