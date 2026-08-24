@@ -278,7 +278,7 @@ img { max-width: 100%; display: block; }
 .cat-tabs a:hover { border-color: var(--ink); }
 .cat-tabs a.active { background: var(--fill); color: var(--fill-text); border-color: var(--fill); }
 .cat-tabs .num { color: var(--text-faint); font-size: 12px; margin-left: 4px; }
-.cat-tabs a.active .num { color: #cfd3d9; }
+.cat-tabs a.active .num { color: var(--fill-text); opacity: 0.72; }
 
 /* ---------- Article grid & cards ---------- */
 .grid {
