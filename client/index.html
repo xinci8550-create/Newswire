@@ -6,6 +6,18 @@
     <meta name="description" content="A multi-source English news aggregator — curated headlines, categorized, and searchable." />
     <title>Newswire — Multi-Source News Aggregator</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>" />
+    <script>
+      // Apply the saved theme (or OS preference) before first paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('newswire-theme');
+          if (t !== 'dark' && t !== 'light') {
+            t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+      })();
+    </script>
     <link rel="stylesheet" href="/assets/main.css" />
   </head>
   <body>

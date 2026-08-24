@@ -23,17 +23,20 @@ function newest(list) {
   return list.sort((a, b) => statSync(path.join(assetsDir, b)).mtimeMs - statSync(path.join(assetsDir, a)).mtimeMs)[0];
 }
 
-const jsFile = newest(files.filter((f) => f.endsWith('.js')));
+// With code-splitting there are multiple .js files (entry + chunks).
+// The ENTRY is the hashed `main-*.js`; chunks are named `chunk-*.js`. Pick the
+// entry (exclude chunks) for index.html; keep all chunks as cacheable assets.
+const jsFile = newest(files.filter((f) => f.endsWith('.js') && !f.startsWith('chunk-')));
 const cssFile = newest(files.filter((f) => f.endsWith('.css')));
 
 if (!jsFile || !cssFile) {
-  console.error('[client-build] ERROR: no .js/.css bundle found in dist/assets');
+  console.error('[client-build] ERROR: no entry .js/.css bundle found in dist/assets');
   process.exit(1);
 }
 
-// Remove stale builds so only the current bundle remains.
+// Remove stale entry/css bundles so only the current build remains (keep chunks).
 for (const f of files) {
-  if ((f.endsWith('.js') || f.endsWith('.css')) && f !== jsFile && f !== cssFile) {
+  if ((f.endsWith('.css') || (f.endsWith('.js') && !f.startsWith('chunk-'))) && f !== jsFile && f !== cssFile) {
     try { unlinkSync(path.join(assetsDir, f)); } catch { /* ignore */ }
   }
 }
@@ -43,4 +46,4 @@ let html = readFileSync(srcIndex, 'utf8');
 // Replace the fixed asset references with the hashed filenames esbuild produced.
 html = html.replace('/assets/main.js', `/assets/${jsFile}`).replace('/assets/main.css', `/assets/${cssFile}`);
 writeFileSync(destIndex, html);
-console.log(`[client-build] index.html -> ${jsFile}, ${cssFile} (stale cleaned)`);
+console.log(`[client-build] index.html -> ${jsFile}, ${cssFile} (${files.filter((f) => f.endsWith('.js') && f.startsWith('chunk-')).length} chunks)`);

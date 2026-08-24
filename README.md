@@ -324,10 +324,12 @@ open `http://localhost:4000` to view it directly.
 
 ## 🔭 Roadmap (P1/P2 not yet done)
 
-- [ ] Full-text search / inverted index (currently DB `LIKE`/`ILIKE` search)
+- [x] Full-text search (FTS5 / tsvector) ✅
+- [x] Dark mode (toggle in header, persisted) ✅
+- [x] Retention cleanup (article + history caps) ✅
 - [ ] OAuth (Google / GitHub) sign-in
 - [ ] Admin panel for source management & bulk category correction
-- [ ] Dark mode, RSS output, data export
+- [ ] RSS output, data export
 - [ ] Postgres-backed full index tuning / caching layer (Redis)
 
 ---

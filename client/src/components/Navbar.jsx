@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { initials } from '../lib';
 import { SearchIcon } from './Icons';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const { user, logout, updateName } = useAuth();
@@ -106,6 +107,7 @@ export default function Navbar() {
               <Link to="/register" className="btn accent">Get started</Link>
             </>
           )}
+          <ThemeToggle />
         </div>
       </div>
     </header>
