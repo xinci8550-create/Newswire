@@ -121,6 +121,11 @@ img { max-width: 100%; display: block; }
     linear-gradient(115deg, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0.72) 50%, rgba(255, 255, 255, 0) 72%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 48%),
     linear-gradient(135deg, #2a080d 0%, #8a1124 40%, #ff4d5e 70%, #4a0e19 100%);
+  /* The `background` shorthand resets background-clip; re-apply text clipping. */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav {
