@@ -34,6 +34,12 @@ export function initials(display) {
   return display.trim().slice(0, 1).toUpperCase();
 }
 
+/** Rough reading time from a text length (~200 wpm), min 1 min. */
+export function readingTime(text) {
+  const words = (text || '').trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 200))} min read`;
+}
+
 // Deeper, more saturated category colors — cohesive with the site's neutral
 // palette + single news-red accent.
 export const CATEGORY_COLORS = {

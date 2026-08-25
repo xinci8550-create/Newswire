@@ -7,8 +7,9 @@ import ArticleCard from '../components/ArticleCard';
 import { Loader, Empty } from '../components/States';
 import { CategoryBar } from '../components/Tabs';
 import Seo from '../components/Seo';
+import ShareButton from '../components/ShareButton';
 import { EmptySearchIcon } from '../components/Icons';
-import { formatTime, CATEGORIES, categoryGlassGradient } from '../lib';
+import { formatTime, CATEGORIES, categoryGlassGradient, readingTime } from '../lib';
 
 export default function ArticlePage() {
   const { id } = useParams();
@@ -64,6 +65,8 @@ export default function ArticlePage() {
         <span>·</span>
         <span>{article.publishedAt ? formatTime(article.publishedAt) : 'recent'}</span>
         <span>·</span>
+        <span>{readingTime(article.summary)}</span>
+        <span>·</span>
         <Link to={`/category/${article.category}`}>{article.category}</Link>
       </div>
 
@@ -74,6 +77,7 @@ export default function ArticlePage() {
           Read original ↗
         </a>
         <FavoriteButton articleId={article.id} initial={article.favorited} size="lg" />
+        <ShareButton title={article.title} url={article.url} />
         {user && (
           editing ? (
             <select

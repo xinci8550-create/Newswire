@@ -184,17 +184,40 @@ export async function incrementViews(id) {
   return Number(row.views);
 }
 
-/** Related articles: same category, most recent first, excluding the given id. */
+const STOP = new Set(['the','a','an','to','of','in','on','at','for','and','or','but','with','from','by','is','are','was','were','be','been','has','have','had','it','its','this','that','as','after','over','into','than','their','they','we','you','your','he','she','his','her','will','would','should','could','can','not','no','yes','what','who','how','why','when','where','do','does','did','about','more','most','some','any','all','just','new','news','says','said','say','amid','us','uk','world','today','live']);
+
+function words(t) {
+  return (t || '').toLowerCase().match(/[a-z0-9]{2,}/g) || [];
+}
+
+/**
+ * Related articles, ranked by title-keyword overlap with the current article so
+ * same-event / cross-source coverage surfaces first, then recency.
+ */
 export async function relatedArticles(id, { limit = 6 } = {}) {
-  const rows = await getDb().all(
+  const db = getDb();
+  const current = await db.get('SELECT id, category, title FROM articles WHERE id = ?', [id]);
+  if (!current) return [];
+  const rows = await db.all(
     `SELECT a.*, s.name AS source_name, s.url AS source_url
        FROM articles a JOIN sources s ON s.id = a.source_id
-      WHERE a.category = (SELECT category FROM articles WHERE id = ?) AND a.id != ?
+      WHERE a.category = ? AND a.id != ?
       ORDER BY a.published_at DESC
-      LIMIT ?`,
-    [id, id, Number(limit)]
+      LIMIT 60`,
+    [current.category, id]
   );
-  return rows.map(toArticle);
+  const target = new Set(words(current.title));
+  const scored = rows
+    .map((r) => {
+      const w = new Set(words(r.title));
+      let overlap = 0;
+      for (const t of target) if (w.has(t)) overlap += 1;
+      return { r, overlap };
+    })
+    .sort((a, b) => b.overlap - a.overlap || (b.r.published_at - a.r.published_at))
+    .slice(0, limit)
+    .map((x) => x.r);
+  return scored.map(toArticle);
 }
 
 export async function setCategory(id, category) {
