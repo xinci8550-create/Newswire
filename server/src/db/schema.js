@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS sources (
   name TEXT NOT NULL,
   url TEXT NOT NULL,
   feed_url TEXT NOT NULL,
+  authority INTEGER NOT NULL DEFAULT 3,
   enabled INTEGER NOT NULL DEFAULT 1,
   created_at BIGINT NOT NULL
 )`,

@@ -9,65 +9,14 @@
  * skipped that cycle.
  */
 export const NEWS_SOURCES = [
-  {
-    name: 'BBC News',
-    url: 'https://www.bbc.com/news',
-    feed_url: 'https://feeds.bbci.co.uk/news/world/rss.xml',
-    enabled: 1,
-  },
-  {
-    name: 'The Guardian',
-    url: 'https://www.theguardian.com',
-    feed_url: 'https://www.theguardian.com/world/rss',
-    enabled: 1,
-  },
-  {
-    name: 'The New York Times',
-    url: 'https://www.nytimes.com',
-    feed_url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-    enabled: 1,
-  },
-  {
-    name: 'TechCrunch',
-    url: 'https://techcrunch.com',
-    feed_url: 'https://techcrunch.com/feed/',
-    enabled: 1,
-  },
-  {
-    name: 'Ars Technica',
-    url: 'https://arstechnica.com',
-    feed_url: 'https://feeds.arstechnica.com/arstechnica/index',
-    enabled: 1,
-  },
-  {
-    name: 'CNBC',
-    url: 'https://www.cnbc.com',
-    feed_url:
-      'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362',
-    enabled: 1,
-  },
-  {
-    name: 'The Verge',
-    url: 'https://www.theverge.com',
-    feed_url: 'https://www.theverge.com/rss/index.xml',
-    enabled: 1,
-  },
-  {
-    name: 'NPR',
-    url: 'https://www.npr.org',
-    feed_url: 'https://feeds.npr.org/1001/rss.xml',
-    enabled: 1,
-  },
-  {
-    name: 'Wired',
-    url: 'https://www.wired.com',
-    feed_url: 'https://www.wired.com/feed/rss',
-    enabled: 1,
-  },
-  {
-    name: 'CBS News',
-    url: 'https://www.cbsnews.com',
-    feed_url: 'https://www.cbsnews.com/latest/rss',
-    enabled: 1,
-  },
+  { name: 'BBC News', url: 'https://www.bbc.com/news', feed_url: 'https://feeds.bbci.co.uk/news/world/rss.xml', authority: 5, enabled: 1 },
+  { name: 'The Guardian', url: 'https://www.theguardian.com', feed_url: 'https://www.theguardian.com/world/rss', authority: 5, enabled: 1 },
+  { name: 'The New York Times', url: 'https://www.nytimes.com', feed_url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml', authority: 5, enabled: 1 },
+  { name: 'TechCrunch', url: 'https://techcrunch.com', feed_url: 'https://techcrunch.com/feed/', authority: 3, enabled: 1 },
+  { name: 'Ars Technica', url: 'https://arstechnica.com', feed_url: 'https://feeds.arstechnica.com/arstechnica/index', authority: 4, enabled: 1 },
+  { name: 'CNBC', url: 'https://www.cnbc.com', feed_url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362', authority: 4, enabled: 1 },
+  { name: 'The Verge', url: 'https://www.theverge.com', feed_url: 'https://www.theverge.com/rss/index.xml', authority: 3, enabled: 1 },
+  { name: 'NPR', url: 'https://www.npr.org', feed_url: 'https://feeds.npr.org/1001/rss.xml', authority: 4, enabled: 1 },
+  { name: 'Wired', url: 'https://www.wired.com', feed_url: 'https://www.wired.com/feed/rss', authority: 4, enabled: 1 },
+  { name: 'CBS News', url: 'https://www.cbsnews.com', feed_url: 'https://www.cbsnews.com/latest/rss', authority: 3, enabled: 1 },
 ];

@@ -26,6 +26,7 @@ export async function ensureSchema() {
   await addColumnIfMissing(db, 'sources', 'last_error', 'TEXT');
   await addColumnIfMissing(db, 'sources', 'fail_count', 'INTEGER NOT NULL DEFAULT 0');
   await addColumnIfMissing(db, 'sources', 'next_retry_at', 'BIGINT');
+  await addColumnIfMissing(db, 'sources', 'authority', 'INTEGER NOT NULL DEFAULT 3');
 
   // 3) Indexes (now that columns exist).
   for (const stmt of indexes) {

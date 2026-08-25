@@ -5,11 +5,11 @@ export async function listSources({ enabledOnly = false } = {}) {
   return getDb().all(`SELECT * FROM sources ${where} ORDER BY enabled DESC, name ASC`);
 }
 
-export async function createSource({ name, url, feed_url, enabled = 1 }) {
+export async function createSource({ name, url, feed_url, enabled = 1, authority = 3 }) {
   const now = Date.now();
   const id = await getDb().insertRowId(
-    'INSERT INTO sources (name, url, feed_url, enabled, created_at) VALUES (?, ?, ?, ?, ?)',
-    [name, url, feed_url, enabled ? 1 : 0, now]
+    'INSERT INTO sources (name, url, feed_url, authority, enabled, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+    [name, url, feed_url, authority, enabled ? 1 : 0, now]
   );
   return getDb().get('SELECT * FROM sources WHERE id = ?', [id]);
 }

@@ -4,6 +4,7 @@ import ArticleGrid from '../components/ArticleGrid';
 import { CategoryBar, Pager } from '../components/Tabs';
 import Seo from '../components/Seo';
 import { NewsIcon } from '../components/Icons';
+import DailyHighlights from '../components/DailyHighlights';
 
 const PAGE_SIZE = 24;
 
@@ -35,6 +36,7 @@ export default function HomePage() {
       </section>
 
       <div className="container" style={{ paddingBottom: 40 }}>
+        <DailyHighlights />
         <CategoryBar active="All" />
         <div className="section-head">
           <div className="sort-toggle" role="tablist">

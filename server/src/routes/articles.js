@@ -3,6 +3,7 @@ import { listArticles, findById, setCategory, incrementViews, relatedArticles } 
 import { isFavorited } from '../models/favorites.js';
 import { optionalAuth, requireAuth } from '../auth/middleware.js';
 import { getDb } from '../db/database.js';
+import { getDaily } from '../services/daily.js';
 
 const router = Router();
 export const CATEGORIES = ['AI', 'Finance', 'Politics', 'Tech', 'Business', 'Entertainment', 'Other'];
@@ -25,6 +26,19 @@ router.get('/api/categories', async (_req, res, next) => {
     const list = CATEGORIES.map((key) => ({ key, label: key, displayLabel: key, count: counts[key] }));
     // Include "其他" even if only "Other" indexed.
     return res.json({ categories: list });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/daily -> today's curated "must-read" top 10 (scored + category-balanced)
+router.get('/api/daily', optionalAuth, async (req, res, next) => {
+  try {
+    const articles = await getDaily();
+    if (req.user) {
+      await Promise.all(articles.map((a) => decorateFavorite(req.user.id, a)));
+    }
+    return res.json({ date: new Date().toISOString().slice(0, 10), articles });
   } catch (e) {
     next(e);
   }

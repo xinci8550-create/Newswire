@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import AuthGate from './components/AuthGate';
 import BackToTop from './components/BackToTop';
 import HomePage from './pages/HomePage';
+import DailyPage from './pages/DailyPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchPage from './pages/SearchPage';
 import ArticlePage from './pages/ArticlePage';
@@ -36,6 +37,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/daily" element={<DailyPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />

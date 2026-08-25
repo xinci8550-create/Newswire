@@ -47,6 +47,15 @@ const config = {
     cleanupEnabled: boolEnv('CLEANUP_ENABLED', true),
   },
 
+  daily: {
+    limit: intEnv('DAILY_LIMIT', 10),
+    categoryCap: intEnv('DAILY_CATEGORY_CAP', 3),
+    windowHours: intEnv('DAILY_WINDOW_HOURS', 24),
+    wFresh: Number(process.env.DAILY_W_FRESH || 0.2),
+    wCross: Number(process.env.DAILY_W_CROSS || 0.5),
+    wAuthority: Number(process.env.DAILY_W_AUTHORITY || 0.3),
+  },
+
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:5173')
     .split(',')
     .map((s) => s.trim())

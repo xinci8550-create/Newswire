@@ -19,9 +19,9 @@ async function seedSources() {
     if (byFeed.has(s.feed_url)) {
       const cur = byFeed.get(s.feed_url);
       const row = await getDb().get('SELECT id FROM sources WHERE id = ?', [cur.id]);
-      if (row && (cur.name !== s.name || cur.url !== s.url || Number(cur.enabled) !== s.enabled)) {
-        await getDb().run('UPDATE sources SET name = ?, url = ?, enabled = ? WHERE id = ?', [
-          s.name, s.url, s.enabled, cur.id,
+      if (row && (cur.name !== s.name || cur.url !== s.url || Number(cur.enabled) !== s.enabled || Number(cur.authority) !== Number(s.authority))) {
+        await getDb().run('UPDATE sources SET name = ?, url = ?, authority = ?, enabled = ? WHERE id = ?', [
+          s.name, s.url, s.authority, s.enabled, cur.id,
         ]);
         updated += 1;
       }

@@ -98,6 +98,7 @@ export const api = {
 
   // articles & categories
   articles: (params) => request(`/articles?${new URLSearchParams(cleanParams(params))}`),
+  daily: () => request('/daily'),
   article: (id) => request(`/articles/${id}`),
   related: (id) => request(`/articles/${id}/related`),
   categories: () => request('/categories'),

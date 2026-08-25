@@ -39,6 +39,7 @@ export default function Navbar() {
               {label}
             </NavLink>
           ))}
+          <NavLink to="/daily" className={({ isActive }) => (isActive ? 'active' : '')}>Daily</NavLink>
           {user && (
             <>
               <NavLink to="/favorites" className={({ isActive }) => (isActive ? 'active' : '')}>Favorites</NavLink>
