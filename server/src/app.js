@@ -9,6 +9,7 @@ import favoriteRoutes from './routes/favorites.js';
 import historyRoutes from './routes/history.js';
 import sourceRoutes from './routes/sources.js';
 import cronRoutes from './routes/cron.js';
+import metaRoutes from './routes/meta.js';
 
 export function createApp() {
   const app = express();
@@ -40,6 +41,7 @@ export function createApp() {
   app.use(historyRoutes);
   app.use(sourceRoutes);
   app.use(cronRoutes);
+  app.use(metaRoutes);
 
   // 404 for unknown API routes.
   app.use('/api', (req, res) => {

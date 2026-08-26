@@ -99,7 +99,7 @@ function buildFts(query) {
   return tokens.length ? tokens.map((t) => `"${t}"*`).join(' OR ') : '';
 }
 
-async function listArticlesSearch(db, { category, sourceId, q, limit, offset }) {
+async function listArticlesSearch(db, { category, sourceId, q, limit, offset, since }) {
   // PostgreSQL: native full-text search via tsvector/tsquery.
   if (db.isPg) {
     const where = [
@@ -108,6 +108,8 @@ async function listArticlesSearch(db, { category, sourceId, q, limit, offset }) 
     const params = [q];
     if (category && category !== '全部' && category !== 'All') { where.push('a.category = ?'); params.push(category); }
     if (sourceId) { where.push('a.source_id = ?'); params.push(Number(sourceId)); }
+    if (since) { where.push('a.published_at >= ?'); params.push(Number(since)); }
+    if (since) { where.push('a.published_at >= ?'); params.push(Number(since)); }
     const whereSql = `WHERE ${where.join(' AND ')}`;
     const rows = await db.all(
       `SELECT a.*, s.name AS source_name, s.url AS source_url
@@ -144,9 +146,9 @@ async function listArticlesSearch(db, { category, sourceId, q, limit, offset }) 
 }
 
 /** List articles with filters and pagination. */
-export async function listArticles({ category, sourceId, q, order = 'new', limit = 24, offset = 0 } = {}) {
+export async function listArticles({ category, sourceId, q, order = 'new', limit = 24, offset = 0, since = 0 } = {}) {
   const db = getDb();
-  if (q) return listArticlesSearch(db, { category, sourceId, q, limit, offset });
+  if (q) return listArticlesSearch(db, { category, sourceId, q, limit, offset, since });
 
   const where = [];
   const params = [];
@@ -158,6 +160,10 @@ export async function listArticles({ category, sourceId, q, order = 'new', limit
   if (sourceId) {
     where.push('a.source_id = ?');
     params.push(Number(sourceId));
+  }
+  if (since) {
+    where.push('a.published_at >= ?');
+    params.push(Number(since));
   }
 
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
@@ -218,6 +224,39 @@ export async function relatedArticles(id, { limit = 6 } = {}) {
     .slice(0, limit)
     .map((x) => x.r);
   return scored.map(toArticle);
+}
+
+/**
+ * Distinct OTHER sources covering the same story as `id` (share >=2 title words
+ * within the recent window). Used to label "Also covered by" on the detail page.
+ */
+export async function coverageFor(id) {
+  const db = getDb();
+  const cur = await db.get('SELECT id, title FROM articles WHERE id = ?', [id]);
+  if (!cur) return [];
+  const rows = await db.all(
+    `SELECT DISTINCT a.source_id, s.name AS source_name, s.url AS source_url, a.title
+       FROM articles a JOIN sources s ON s.id = a.source_id
+      WHERE a.id != ? AND a.published_at >= ?
+      ORDER BY a.published_at DESC
+      LIMIT 300`,
+    [id, Date.now() - 4 * 24 * 3600 * 1000]
+  );
+  const target = new Set(words(cur.title));
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    if (seen.has(r.source_id)) continue;
+    const w = new Set(words(r.title));
+    let shared = 0;
+    for (const t of target) { if (w.has(t)) { shared += 1; if (shared >= 2) break; } }
+    if (shared >= 2) {
+      seen.add(r.source_id);
+      out.push({ name: r.source_name, url: r.source_url });
+      if (out.length >= 5) break;
+    }
+  }
+  return out;
 }
 
 export async function setCategory(id, category) {

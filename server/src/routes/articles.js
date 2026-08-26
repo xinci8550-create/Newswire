@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listArticles, findById, setCategory, incrementViews, relatedArticles } from '../models/articles.js';
+import { listArticles, findById, setCategory, incrementViews, relatedArticles, coverageFor } from '../models/articles.js';
 import { isFavorited } from '../models/favorites.js';
 import { optionalAuth, requireAuth } from '../auth/middleware.js';
 import { getDb } from '../db/database.js';
@@ -50,6 +50,7 @@ router.get('/api/articles', optionalAuth, async (req, res, next) => {
     const { category, sourceId, q, order } = req.query;
     const limit = Math.min(parseInt(req.query.limit, 10) || 24, 100);
     const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
+    const since = parseInt(req.query.since, 10) > 0 ? Number(req.query.since) : 0;
     const result = await listArticles({
       category: category ? String(category) : undefined,
       sourceId: sourceId ? Number(sourceId) : undefined,
@@ -57,6 +58,7 @@ router.get('/api/articles', optionalAuth, async (req, res, next) => {
       order: order || 'new',
       limit,
       offset,
+      since,
     });
     if (req.user) {
       await Promise.all(result.articles.map((a) => decorateFavorite(req.user.id, a)));
@@ -75,6 +77,7 @@ router.get('/api/articles/:id', optionalAuth, async (req, res, next) => {
     const article = await findById(id);
     if (!article) return res.status(404).json({ error: 'Article not found' });
     if (req.user) await decorateFavorite(req.user.id, article);
+    article.coverage = await coverageFor(id);
     return res.json({ article });
   } catch (e) {
     next(e);

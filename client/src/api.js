@@ -103,6 +103,7 @@ export const api = {
   related: (id) => request(`/articles/${id}/related`),
   categories: () => request('/categories'),
   sources: () => request('/sources'),
+  changelog: () => request('/changelog'),
   recordView: (id) => request(`/articles/${id}/view`, { method: 'POST' }),
   correctCategory: (id, category) => request(`/articles/${id}/category`, { method: 'PATCH', body: { category } }),
 

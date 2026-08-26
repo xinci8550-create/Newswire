@@ -40,6 +40,7 @@ export default function Navbar() {
             </NavLink>
           ))}
           <NavLink to="/daily" className={({ isActive }) => (isActive ? 'active' : '')}>Daily</NavLink>
+          <NavLink to="/changelog" className={({ isActive }) => (isActive ? 'active' : '')}>Updates</NavLink>
           {user && (
             <>
               <NavLink to="/favorites" className={({ isActive }) => (isActive ? 'active' : '')}>Favorites</NavLink>

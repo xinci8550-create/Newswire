@@ -1,0 +1,44 @@
+[
+  {
+    "version": "v1.0.0",
+    "date": "2026-08-23",
+    "title": "Initial public release",
+    "items": [
+      "10 trusted English news sources, 7 categories",
+      "User accounts (JWT), favorites & browsing history",
+      "Full-text search, trending, related articles",
+      "One-click deploy: Render + Postgres + scheduled scraping"
+    ]
+  },
+  {
+    "version": "v1.1.0",
+    "date": "2026-08-23",
+    "title": "Search, retention & reliability",
+    "items": [
+      "Full-text search (FTS5 / Postgres tsvector)",
+      "Article & browsing-history retention caps (prevent data growth)",
+      "Scrape health endpoint + per-source failure backoff"
+    ]
+  },
+  {
+    "version": "v1.2.0",
+    "date": "2026-08-24",
+    "title": "Dark mode & reading polish",
+    "items": [
+      "Dark mode with a toggle — persisted and follows your system",
+      "Smarter sentence-aware summaries + reading time",
+      "Share button and relevance-ranked related articles"
+    ]
+  },
+  {
+    "version": "v1.3.0",
+    "date": "2026-08-25",
+    "title": "Daily must-read brief & discovery",
+    "items": [
+      "Today's Must-Reads: a curated top 10 (category-balanced)",
+      "Compact homepage strip + full /daily brief",
+      "Filter by source and time range",
+      "Cross-source 'same story' labels on articles"
+    ]
+  }
+]

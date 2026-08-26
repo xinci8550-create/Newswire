@@ -72,6 +72,20 @@ export default function ArticlePage() {
 
       <div className="cover" style={{ background: categoryGlassGradient(article.category) }} />
 
+      {article.coverage && article.coverage.length > 0 ? (
+        <div className="coverage-note">
+          <span className="coverage-label">Also covered by</span>
+          <span className="coverage-sources">
+            {article.coverage.map((s, i) => (
+              <span key={i}>
+                {i > 0 && <span className="coverage-sep">, </span>}
+                <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>
+              </span>
+            ))}
+          </span>
+        </div>
+      ) : null}
+
       <div className="actions-row">
         <a className="read-original" href={article.url} target="_blank" rel="noopener noreferrer">
           Read original ↗

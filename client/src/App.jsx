@@ -9,6 +9,7 @@ import SearchPage from './pages/SearchPage';
 import ArticlePage from './pages/ArticlePage';
 import FavoritesPage from './pages/FavoritesPage';
 import HistoryPage from './pages/HistoryPage';
+import ChangelogPage from './pages/ChangelogPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/favorites" element={<AuthGate><FavoritesPage /></AuthGate>} />
           <Route path="/history" element={<AuthGate><HistoryPage /></AuthGate>} />
+          <Route path="/changelog" element={<ChangelogPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>
