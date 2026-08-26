@@ -4,10 +4,10 @@
     "date": "2026-08-23",
     "title": "Initial public release",
     "items": [
-      "10 trusted English news sources, 7 categories",
-      "User accounts (JWT), favorites & browsing history",
-      "Full-text search, trending, related articles",
-      "One-click deploy: Render + Postgres + scheduled scraping"
+      { "type": "feature", "text": "10 trusted English news sources, 7 categories" },
+      { "type": "feature", "text": "User accounts (JWT), favorites & browsing history" },
+      { "type": "feature", "text": "Full-text search, trending & related articles" },
+      { "type": "feature", "text": "One-click deploy: Render + Postgres + scheduled scraping" }
     ]
   },
   {
@@ -15,9 +15,10 @@
     "date": "2026-08-23",
     "title": "Search, retention & reliability",
     "items": [
-      "Full-text search (FTS5 / Postgres tsvector)",
-      "Article & browsing-history retention caps (prevent data growth)",
-      "Scrape health endpoint + per-source failure backoff"
+      { "type": "feature", "text": "Native full-text search (FTS5 / Postgres tsvector)" },
+      { "type": "feature", "text": "Article & browsing-history retention caps (prevent data growth)" },
+      { "type": "feature", "text": "Scrape health endpoint + per-source failure backoff" },
+      { "type": "perf", "text": "Content-visibility + immutable asset caching" }
     ]
   },
   {
@@ -25,9 +26,10 @@
     "date": "2026-08-24",
     "title": "Dark mode & reading polish",
     "items": [
-      "Dark mode with a toggle — persisted and follows your system",
-      "Smarter sentence-aware summaries + reading time",
-      "Share button and relevance-ranked related articles"
+      { "type": "feature", "text": "Dark mode with a toggle — persisted & follows your system" },
+      { "type": "feature", "text": "Smarter sentence-aware summaries + reading time" },
+      { "type": "feature", "text": "Share button & relevance-ranked related articles" },
+      { "type": "fix", "text": "Fixed dark-mode contrast on the logo, counts & inputs" }
     ]
   },
   {
@@ -35,10 +37,11 @@
     "date": "2026-08-25",
     "title": "Daily must-read brief & discovery",
     "items": [
-      "Today's Must-Reads: a curated top 10 (category-balanced)",
-      "Compact homepage strip + full /daily brief",
-      "Filter by source and time range",
-      "Cross-source 'same story' labels on articles"
+      { "type": "feature", "text": "Today's Must-Reads: a curated top 10 (category-balanced)" },
+      { "type": "feature", "text": "Compact homepage strip + full /daily brief" },
+      { "type": "feature", "text": "Filter by source and time range" },
+      { "type": "feature", "text": "Cross-source 'same story' labels on articles" },
+      { "type": "polish", "text": "Refined homepage daily strip to a compact layout" }
     ]
   }
 ]

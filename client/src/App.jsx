@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AuthGate from './components/AuthGate';
 import BackToTop from './components/BackToTop';
@@ -20,6 +20,7 @@ function Footer() {
         <div className="footer-links">
           <p>Built with React &amp; Express · RSS-powered · Deployable anywhere</p>
           <p className="muted">Summaries only — read the original articles at their source.</p>
+          <p className="muted"><Link to="/changelog">What&rsquo;s new? Read the update log →</Link></p>
         </div>
         <div className="footer-bottom">
           <div className="footer-brand">Newswire</div>

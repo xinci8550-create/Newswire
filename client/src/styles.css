@@ -711,7 +711,7 @@ footer {
 @media (max-width: 640px) { .daily-item { gap: 12px; } .daily-num { font-size: 28px; min-width: 34px; } }
 
 /* ---------- Source / time filters ---------- */
-.filter-bar { display: flex; gap: 10px; margin: 16px 0 0; flex-wrap: wrap; }
+.filter-bar { display: flex; gap: 10px; margin: 20px 0 22px; flex-wrap: wrap; }
 .filter-select {
   padding: 8px 34px 8px 14px; font-size: 14px; color: var(--text);
   background: var(--surface); border: 1px solid var(--border-strong); border-radius: 999px;
@@ -738,5 +738,14 @@ footer {
 }
 .changelog-date { font-size: 13px; color: var(--text-muted); }
 .changelog-title { font-family: var(--font-serif); font-size: 20px; margin: 0 0 8px; color: var(--ink); }
-.changelog-items { margin: 0; padding-left: 18px; color: var(--text); }
-.changelog-items li { margin: 4px 0; }
+.changelog-items { margin: 0; padding-left: 2px; color: var(--text); list-style: none; }
+.changelog-items li { margin: 6px 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.changelog-items li::before { content: '•'; color: var(--text-faint); align-self: center; }
+.changelog-badge {
+  flex: none; margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+  padding: 2px 8px; border-radius: 999px; color: #fff;
+}
+.t-feature { background: #2f7d4f; }
+.t-fix { background: #c0482e; }
+.t-polish { background: #7048b8; }
+.t-perf { background: #3177a8; }
