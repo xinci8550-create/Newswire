@@ -712,12 +712,28 @@ footer {
 
 /* ---------- Source / time filters ---------- */
 .filter-bar { display: flex; gap: 10px; margin: 20px 0 22px; flex-wrap: wrap; }
-.filter-select {
-  padding: 8px 34px 8px 14px; font-size: 14px; color: var(--text);
+.dropdown { position: relative; }
+.dropdown-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; font-size: 14px; color: var(--text);
   background: var(--surface); border: 1px solid var(--border-strong); border-radius: 999px;
   cursor: pointer; outline: none;
 }
-.filter-select:focus { border-color: var(--navy); }
+.dropdown-trigger:focus-visible { border-color: var(--navy); }
+.dropdown-caret { color: var(--text-muted); font-size: 12px; transition: transform .15s; }
+.dropdown.is-open .dropdown-caret { transform: rotate(180deg); }
+.dropdown-list {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 40;
+  min-width: 100%; max-height: 280px; overflow: auto;
+  background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 10px;
+  box-shadow: var(--card-shadow); list-style: none; margin: 0; padding: 5px;
+}
+.dropdown-list li {
+  padding: 8px 12px; border-radius: 6px; font-size: 14px; color: var(--ink-soft); cursor: pointer;
+  white-space: nowrap;
+}
+.dropdown-list li:hover { background: var(--accent-soft); }
+.dropdown-list li.active { background: var(--fill); color: var(--fill-text); font-weight: 600; }
 
 /* ---------- Cross-source "Also covered by" ---------- */
 .coverage-note {
