@@ -43,5 +43,17 @@
       { "type": "feature", "text": "Cross-source 'same story' labels on articles" },
       { "type": "polish", "text": "Refined homepage daily strip to a compact layout" }
     ]
+  },
+  {
+    "version": "v1.4.0",
+    "date": "2026-08-25",
+    "title": "Polish, fixes & the update log",
+    "items": [
+      { "type": "fix", "text": "Fixed article pages returning an error on Postgres (DISTINCT/ORDER BY)" },
+      { "type": "feature", "text": "Category tag chips + clearer spacing on the meta line" },
+      { "type": "feature", "text": "Custom filter dropdowns — always open downward, theme-matched" },
+      { "type": "feature", "text": "What's New update log with type badges (in the footer)" },
+      { "type": "polish", "text": "Refined the daily must-read cards and list" }
+    ]
   }
 ]

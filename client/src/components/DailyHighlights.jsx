@@ -30,7 +30,13 @@ export default function DailyHighlights() {
             <span className="daily-row-accent" style={{ background: categoryGlassGradient(a.category) }} />
             <span className="daily-row-text">
               <span className="daily-row-title">{a.title}</span>
-              <span className="daily-row-meta">{a.category} · {formatTime(a.publishedAt)} · {a.sourceName}</span>
+              <span className="meta">
+                <span className="cat">{a.category}</span>
+                <span className="dot" />
+                <span>{formatTime(a.publishedAt)}</span>
+                <span className="dot" />
+                <span className="src">{a.sourceName}</span>
+              </span>
             </span>
           </Link>
         ))}

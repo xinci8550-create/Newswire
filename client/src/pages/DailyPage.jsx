@@ -40,8 +40,8 @@ export default function DailyPage() {
                   <span className="cat">{a.category}</span>
                   <span className="dot" />
                   <span>{formatTime(a.publishedAt)}</span>
-                  <span>·</span>
-                  <a className="daily-source" href={a.sourceUrl} target="_blank" rel="noopener noreferrer">{a.sourceName}</a>
+                  <span className="dot" />
+                  <a className="src" href={a.sourceUrl} target="_blank" rel="noopener noreferrer">{a.sourceName}</a>
                 </div>
                 <h3><Link to={`/article/${a.id}`}>{a.title}</Link></h3>
                 {a.summary ? <p className="summary">{a.summary}</p> : null}
