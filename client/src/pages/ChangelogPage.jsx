@@ -37,7 +37,6 @@ export default function ChangelogPage() {
           <div key={e.version} className="changelog-entry">
             <div className="changelog-head">
               <span className="changelog-version">{e.version}</span>
-              <span className="changelog-date">{e.date}</span>
             </div>
             <h3 className="changelog-title">{e.title}</h3>
             <ul className="changelog-items">

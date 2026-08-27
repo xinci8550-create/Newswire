@@ -8,6 +8,7 @@ import { Loader, Empty } from '../components/States';
 import { CategoryBar } from '../components/Tabs';
 import Seo from '../components/Seo';
 import ShareButton from '../components/ShareButton';
+import Dropdown from '../components/Dropdown';
 import { EmptySearchIcon } from '../components/Icons';
 import { formatTime, CATEGORIES, categoryGlassGradient, readingTime } from '../lib';
 
@@ -94,14 +95,12 @@ export default function ArticlePage() {
         <ShareButton title={article.title} url={article.url} />
         {user && (
           editing ? (
-            <select
-              defaultValue={article.category}
-              onChange={(e) => correctCategory(e.target.value)}
-              onBlur={() => setEditing(false)}
-              style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border-strong)' }}
-            >
-              {CATEGORIES.map((c) => <option key={c.key} value={c.key}>{c.key}</option>)}
-            </select>
+            <Dropdown
+              value={article.category}
+              onChange={(v) => { correctCategory(String(v)); setEditing(false); }}
+              ariaLabel="Edit category"
+              options={CATEGORIES.map((c) => ({ value: c.key, label: c.displayLabel || c.key }))}
+            />
           ) : (
             <button className="link-btn" onClick={() => setEditing(true)}>Edit category</button>
           )
