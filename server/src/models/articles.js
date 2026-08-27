@@ -235,7 +235,7 @@ export async function coverageFor(id) {
   const cur = await db.get('SELECT id, title FROM articles WHERE id = ?', [id]);
   if (!cur) return [];
   const rows = await db.all(
-    `SELECT DISTINCT a.source_id, s.name AS source_name, s.url AS source_url, a.title
+    `SELECT a.source_id, s.name AS source_name, s.url AS source_url, a.title
        FROM articles a JOIN sources s ON s.id = a.source_id
       WHERE a.id != ? AND a.published_at >= ?
       ORDER BY a.published_at DESC
