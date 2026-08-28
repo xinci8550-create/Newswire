@@ -29,9 +29,7 @@ let cache = { date: null, articles: [] };
  * - authority: source authority (1..5) -> /5
  * Then pick the top `limit`, enforcing a per-category cap.
  */
-export async function computeDaily() {
-  const db = getDb();
-  const windowMs = config.daily.windowHours * 3600 * 1000;
+async function rankWindow(db, windowMs) {
   const cutoff = Date.now() - windowMs;
   const rows = await db.all(
     `SELECT a.*, s.name AS source_name, s.url AS source_url, s.authority
@@ -41,7 +39,7 @@ export async function computeDaily() {
       LIMIT 400`,
     [cutoff]
   );
-  if (!rows.length) return [];
+  if (!rows.length) return { picks: [], candidateCount: 0 };
 
   const items = rows.map((r) => ({ r, w: new Set(words(r.title)) }));
 
@@ -79,7 +77,28 @@ export async function computeDaily() {
     if (picked.length >= config.daily.limit) break;
   }
   picked.sort((a, b) => b.score - a.score);
-  return picked.map((s) => ({ ...toArticle(s.r), score: Math.round(s.score * 100) / 100 }));
+  return {
+    candidateCount: rows.length,
+    picks: picked.map((s) => ({ ...toArticle(s.r), score: Math.round(s.score * 100) / 100 })),
+  };
+}
+
+/**
+ * Score articles within the daily window. If the window is too sparse (fewer
+ * than `limit` candidates), progressively widen to 3 days then 7 days so the
+ * brief never goes empty when news is momentarily stale.
+ */
+export async function computeDaily() {
+  const db = getDb();
+  const baseH = config.daily.windowHours;
+  const windows = [baseH, Math.max(baseH * 2, 72), 168].filter((v, i, a) => a.indexOf(v) === i);
+  let best = null;
+  for (const h of windows) {
+    const res = await rankWindow(db, h * 3600 * 1000);
+    if (res.candidateCount >= config.daily.limit) return res.picks;
+    if (!best || res.candidateCount > best.candidateCount) best = res;
+  }
+  return best ? best.picks : [];
 }
 
 /** Return today's daily list (cached for the day; recompute on new day). */
